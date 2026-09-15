@@ -22,8 +22,11 @@ export function Campo({ etiqueta, dica, erro, id, className = '', ...props }: Ca
         aria-describedby={erro ? idDoErro : undefined}
         className={[
           'w-full rounded-xl border bg-white px-4 py-3 text-base text-roxo-escuro',
-          'placeholder:text-texto-suave/70 focus:outline-2 focus:outline-offset-1 focus:outline-roxo',
-          erro ? 'border-red-400' : 'border-roxo-claro/60',
+          'transition-all duration-200 ease-out placeholder:text-texto-suave/70',
+          'focus:outline-2 focus:outline-offset-1 focus:outline-roxo',
+          erro
+            ? 'border-red-400'
+            : 'border-lavanda-forte/80 hover:border-roxo-vivo/70',
           className,
         ]
           .filter(Boolean)

@@ -9,7 +9,7 @@ com a ponte para as ferramentas do Mentoria que atendem as dores detectadas.
 
 - Next.js 16 (App Router) e TypeScript
 - Tailwind CSS 4
-- Fraunces (títulos) e Inter (corpo) via `next/font`
+- Garet (títulos, self-hosted em `public/fonts`) e Montserrat (corpo, via `next/font`)
 - Envio de e-mail transacional pela API do Brevo, dentro da Route Handler `/api/lead`
 - Deploy alvo: Vercel
 
@@ -39,7 +39,7 @@ Copie `.env.example` para `.env.local` e preencha. Nenhuma delas tem prefixo
 | `BREVO_API_KEY` | sim, para o e-mail sair | Chave da API transacional do Brevo |
 | `BREVO_SENDER_EMAIL` | sim, para o e-mail sair | Remetente verificado no Brevo |
 | `BREVO_SENDER_NAME` | não | Nome que aparece no remetente. Padrão: `Mentoria` |
-| `MENTORIA_URL` | não | Destino do CTA "Conhecer o Mentoria", na tela e no e-mail. Padrão: `https://mentoria.com.br` |
+| `MENTORIA_URL` | não | Destino do CTA "Conhecer o Mentoria", na tela e no e-mail. Padrão: o endereço com UTMs definido em `lib/links.ts`. |
 
 ### Onde pegar a chave do Brevo
 
@@ -124,7 +124,7 @@ aquela dor. Ajuste as perguntas e os pesos em `lib/perguntas.ts` e as faixas em
 {
   "nome": "Ana Paula",
   "email": "ana@escola.com.br",
-  "serieDisciplina": "6º ano, Ciências",
+  "turmas": ["Fundamental II (6º ao 9º)", "Ensino Médio"],
   "nivel": "explorador",
   "pontuacao": 6,
   "dores": ["tempo", "correcao", "bncc"]

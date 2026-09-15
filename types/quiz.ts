@@ -44,7 +44,8 @@ export interface Nivel {
 export interface Lead {
   nome: string
   email: string
-  serieDisciplina?: string
+  /** Segmentos que o professor atende, escolhidos na checklist. */
+  turmas?: string[]
   nivel: NivelId
   pontuacao: number
 }

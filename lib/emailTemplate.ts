@@ -20,7 +20,7 @@ export interface DadosDoEmail {
   nome: string
   nivel: NivelId
   pontuacao: number
-  serieDisciplina?: string
+  turmas?: string[]
   dores?: (Dor & { id: DorId })[]
   mentoriaUrl: string
 }
@@ -33,7 +33,7 @@ export function montarEmailHtml({
   nome,
   nivel,
   pontuacao,
-  serieDisciplina,
+  turmas = [],
   dores = [],
   mentoriaUrl,
 }: DadosDoEmail): string {
@@ -70,9 +70,9 @@ export function montarEmailHtml({
         )
         .join('')
 
-  const linhaDaTurma = serieDisciplina?.trim()
+  const linhaDaTurma = turmas.length
     ? `<p style="margin:8px 0 0 0;font-size:14px;line-height:1.5;color:#6f6880;">
-         Turma informada: ${escaparHtml(serieDisciplina.trim())}
+         Turmas que você atende: ${escaparHtml(turmas.join(', '))}
        </p>`
     : ''
 

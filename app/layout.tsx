@@ -1,16 +1,15 @@
 import type { Metadata, Viewport } from 'next'
-import { Fraunces, Inter } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
+import { TexturaDeFundo } from '@/components/TexturaDeFundo'
 import './globals.css'
 
-const fraunces = Fraunces({
+/**
+ * Montserrat é a fonte de corpo da marca. A fonte de título, Garet, é
+ * carregada por @font-face em globals.css a partir de public/fonts.
+ */
+const montserrat = Montserrat({
   subsets: ['latin'],
-  weight: ['500', '600', '700'],
-  variable: '--fonte-titulo',
-  display: 'swap',
-})
-
-const inter = Inter({
-  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
   variable: '--fonte-corpo',
   display: 'swap',
 })
@@ -35,7 +34,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${fraunces.variable} ${inter.variable}`}>
+    <html lang="pt-BR" className={montserrat.variable}>
       <head>
         {/*
           Placeholder do Meta Pixel. Quando o pixel for configurado, troque este
@@ -52,7 +51,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           StartQuiz (custom) no início do quiz e Lead no envio do formulário.
         */}
       </head>
-      <body>{children}</body>
+      <body>
+        <TexturaDeFundo />
+        {children}
+      </body>
     </html>
   )
 }

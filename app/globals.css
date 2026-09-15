@@ -1,23 +1,61 @@
 @import 'tailwindcss';
 
+/* ---------------------------------------------------------------
+   Garet, a fonte de titulo da marca.
+   Os arquivos ficam em public/fonts. Enquanto nao estiverem la, o
+   navegador cai para Montserrat sem quebrar nada.
+   --------------------------------------------------------------- */
+@font-face {
+  font-family: 'Garet';
+  src: url('/fonts/Garet-Book.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Garet';
+  src: url('/fonts/Garet-Heavy.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
+  /* Marca */
   --color-roxo-escuro: #2d1b4e;
+  --color-roxo-profundo: #1b1030;
   --color-roxo: #6b3fd8;
+  --color-roxo-vivo: #8b5cf6;
   --color-roxo-claro: #b8a2e3;
+  --color-lavanda: #ede4fc;
+  --color-lavanda-forte: #d9c9f7;
   --color-creme: #faf8f3;
   --color-texto: #3a3348;
   --color-texto-suave: #6f6880;
+  --color-ouro: #f5c451;
 
-  --font-titulo: var(--fonte-titulo), ui-serif, Georgia, serif;
+  /* Tipografia */
+  --font-titulo: 'Garet', var(--fonte-corpo), ui-sans-serif, system-ui, sans-serif;
   --font-corpo: var(--fonte-corpo), ui-sans-serif, system-ui, sans-serif;
 
-  --animate-surgir: surgir 0.4s ease-out both;
+  /* Movimento */
+  --animate-surgir: surgir 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-surgir-lateral: surgir-lateral 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-escala: escala 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-flutuar: flutuar 6s ease-in-out infinite;
+  --animate-brilho: brilho 2.4s linear infinite;
+  --animate-pulso-suave: pulso-suave 2.6s ease-in-out infinite;
+  --animate-girar-lento: girar 22s linear infinite;
+  --animate-derivar-a: derivar-a 26s ease-in-out infinite;
+  --animate-derivar-b: derivar-b 34s ease-in-out infinite;
+  --animate-derivar-c: derivar-c 30s ease-in-out infinite;
 }
 
 @keyframes surgir {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -25,18 +63,136 @@
   }
 }
 
+@keyframes surgir-lateral {
+  from {
+    opacity: 0;
+    transform: translateX(-22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes escala {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes flutuar {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Faixa de luz que percorre a barra de progresso. */
+@keyframes brilho {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+@keyframes pulso-suave {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.06);
+  }
+}
+
+/* Deriva lenta das formas de fundo: textura, nunca protagonismo. */
+@keyframes derivar-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(28px, -38px, 0) rotate(18deg);
+  }
+}
+
+@keyframes derivar-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-34px, 30px, 0) rotate(-14deg);
+  }
+}
+
+@keyframes derivar-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(18px, 26px, 0) scale(1.12);
+  }
+}
+
+@keyframes girar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Atraso em cascata para listas que entram uma atras da outra. */
+.cascata > * {
+  animation: surgir 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.cascata > *:nth-child(1) { animation-delay: 0.04s; }
+.cascata > *:nth-child(2) { animation-delay: 0.1s; }
+.cascata > *:nth-child(3) { animation-delay: 0.16s; }
+.cascata > *:nth-child(4) { animation-delay: 0.22s; }
+.cascata > *:nth-child(5) { animation-delay: 0.28s; }
+.cascata > *:nth-child(6) { animation-delay: 0.34s; }
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--color-creme);
+  background-color: var(--color-lavanda);
   color: var(--color-texto);
   font-family: var(--font-corpo);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background-color: var(--color-roxo-claro);
+  background-color: var(--color-lavanda-forte);
   color: var(--color-roxo-escuro);
+}
+
+/* Quem pediu menos movimento no sistema recebe a interface parada. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

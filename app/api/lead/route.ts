@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { enviarResultadoPorEmail } from '@/lib/brevo'
 import { DORES } from '@/lib/perguntas'
+import { LINK_MENTORIA } from '@/lib/links'
+import { TURMAS_DISPONIVEIS } from '@/lib/turmas'
 import { ehNivelValido } from '@/lib/pontuacao'
 import { emailValido, nomeValido } from '@/lib/validacao'
 import type { Dor, DorId } from '@/types/quiz'
@@ -10,7 +12,7 @@ export const runtime = 'nodejs'
 interface CorpoDaRequisicao {
   nome?: unknown
   email?: unknown
-  serieDisciplina?: unknown
+  turmas?: unknown
   nivel?: unknown
   pontuacao?: unknown
   dores?: unknown
@@ -18,6 +20,15 @@ interface CorpoDaRequisicao {
 
 function textoLimpo(valor: unknown, limite: number): string {
   return typeof valor === 'string' ? valor.trim().slice(0, limite) : ''
+}
+
+/** Aceita só os segmentos que a checklist oferece, para não guardar texto solto. */
+function turmasRecebidas(valor: unknown): string[] {
+  if (!Array.isArray(valor)) return []
+  return valor.filter(
+    (turma): turma is string =>
+      typeof turma === 'string' && (TURMAS_DISPONIVEIS as readonly string[]).includes(turma),
+  )
 }
 
 function doresRecebidas(valor: unknown): (Dor & { id: DorId })[] {
@@ -39,7 +50,7 @@ export async function POST(requisicao: Request) {
 
   const nome = textoLimpo(corpo.nome, 120)
   const email = textoLimpo(corpo.email, 180).toLowerCase()
-  const serieDisciplina = textoLimpo(corpo.serieDisciplina, 160)
+  const turmas = turmasRecebidas(corpo.turmas)
   const pontuacao = Number(corpo.pontuacao)
 
   if (!nomeValido(nome) || !emailValido(email)) {
@@ -54,7 +65,7 @@ export async function POST(requisicao: Request) {
     return NextResponse.json({ ok: false, erro: 'Pontuação inválida.' }, { status: 400 })
   }
 
-  const mentoriaUrl = process.env.MENTORIA_URL ?? 'https://mentoria.com.br'
+  const mentoriaUrl = process.env.MENTORIA_URL ?? LINK_MENTORIA
 
   const { enviado, motivo } = await enviarResultadoPorEmail(
     { nome, email },
@@ -62,7 +73,7 @@ export async function POST(requisicao: Request) {
       nome,
       nivel: corpo.nivel,
       pontuacao,
-      serieDisciplina: serieDisciplina || undefined,
+      turmas,
       dores: doresRecebidas(corpo.dores),
       mentoriaUrl,
     },
